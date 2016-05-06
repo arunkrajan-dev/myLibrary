@@ -1,0 +1,160 @@
+<template name="Books">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> BooksView}}
+	</div>
+</template>
+
+<template name="BooksView">
+	<div id="books-view" class="">
+		<h2 id="component-title">
+			books
+		</h2>
+		<form id="dataview-controls" class="form-inline">
+			<div id="dataview-controls-insert" class="form-group {{insertButtonClass}}">
+				<button type="submit" id="dataview-insert-button" class="btn btn-success">
+					<span class="fa fa-plus">
+					</span>
+					Add new Books
+				</button>
+			</div>
+			<div id="dataview-controls-search">
+				{{#if isNotEmpty}}
+				<div id="dataview-controls-search-group" class="form-group">
+					<label class="sr-only" for="search">
+						Search
+					</label>
+					<input type="text" class="form-control" id="dataview-search-input" placeholder="Search" name="search" value="{{searchString}}" autofocus="autofocus">
+					<button type="button" id="dataview-search-button" class="btn btn-primary">
+						<span class="fa fa-search">
+						</span>
+					</button>
+				</div>
+				{{/if}}
+			</div>
+			<div id="dataview-controls-export" class="form-group">
+				{{#if isNotEmpty}}
+		{{#if isFound}}
+				<div>
+				</div>
+				{{else}}
+				<div class="btn-group">
+					<button type="button" class="btn btn-default" id="dataview-export-default">
+						Export
+					</button>
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<span class="caret">
+						</span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li>
+							<a href="#" id="dataview-export-csv">
+								Export to CSV
+							</a>
+						</li>
+						<li>
+							<a href="#" id="dataview-export-tsv">
+								Export to TSV
+							</a>
+						</li>
+						<li>
+							<a href="#" id="dataview-export-json">
+								Export to JSON
+							</a>
+						</li>
+					</ul>
+				</div>
+				{{/if}}
+	{{/if}}
+			</div>
+		</form>
+		{{#if isNotEmpty}}
+			{{#if isNotFound}}
+		<div class="alert alert-warning">
+			"{{searchString}}" not found.
+		</div>
+		{{else}}
+		<div id="dataview-data">
+			{{#if viewAsTable}} {{> BooksViewTable}} {{/if}}
+		</div>
+		{{/if}}
+		{{else}}
+		<div class="alert alert-info">
+			No books :(
+		</div>
+		{{/if}}
+	</div>
+</template>
+
+<template name="BooksViewTable">
+	<table id="dataview-table" class="table table-striped table-hover">
+		<thead id="dataview-table-header">
+			<tr id="dataview-table-header-row">
+				<th class="th-sortable" data-sort="title">
+					Book Title
+				</th>
+				<th class="th-sortable" data-sort="author">
+					Book Author
+				</th>
+				<th class="th-sortable" data-sort="lang">
+					Language
+				</th>
+				<th class="th-sortable" data-sort="publish">
+					Book Publish Info
+				</th>
+				<th class="th-sortable" data-sort="owner">
+					Book Owner
+				</th>
+				<th class="th-sortable" data-sort="Notes">
+					Notes
+				</th>
+				<th>
+					&nbsp;
+				</th>
+				<th>
+					&nbsp;
+				</th>
+			</tr>
+		</thead>
+		<tbody id="dataview-table-items">
+			{{#each tableItems}} {{> BooksViewTableItems}} {{/each}}
+		</tbody>
+	</table>
+</template>
+
+<template name="BooksViewTableItems">
+	<tr id="dataview-table-items-row">
+		<td>
+			{{title}}
+		</td>
+		<td>
+			{{author}}
+		</td>
+		<td>
+			{{lang}}
+		</td>
+		<td>
+			{{publish}}
+		</td>
+		<td>
+			{{owner}}
+		</td>
+		<td>
+			{{Notes}}
+		</td>
+		<td class="td-icon">
+			<span id="edit-button" class="fa fa-pencil {{editButtonClass}}" title="Edit">
+			</span>
+		</td>
+		<td class="td-icon">
+			<span id="delete-button" class="fa fa-trash-o {{deleteButtonClass}}" title="Delete">
+			</span>
+		</td>
+	</tr>
+</template>
+

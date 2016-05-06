@@ -1,0 +1,117 @@
+<template name="BooksInsert">
+	<div class="page-container container" id="content">
+		<div class="row" id="title_row">
+			<div class="col-md-12">
+				<div id="page_menu" class="pull-right">
+				</div>
+			</div>
+		</div>
+		{{> BooksInsertInsertForm}}
+	</div>
+</template>
+
+<template name="BooksInsertInsertForm">
+	<div id="books-insert-insert-form" class="">
+		<h2 id="component-title">
+			New Book
+		</h2>
+		<form role="form">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-title">
+				<label for="title">
+					Book Title
+				</label>
+				<div class="input-div">
+					<input type="text" name="title" value="" class="form-control" autofocus="autofocus" required="required">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-author">
+				<label for="author">
+					Book Author
+				</label>
+				<div class="input-div">
+					<input type="text" name="author" value="" class="form-control" required="required">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-lang">
+				<label for="lang">
+					Language
+				</label>
+				<div class="input-div">
+					<input type="text" name="lang" value="" class="form-control">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-publish">
+				<label for="publish">
+					Book Publish Info
+				</label>
+				<div class="input-div">
+					<input type="text" name="publish" value="" class="form-control">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-owner">
+				<label for="owner">
+					Book Owner
+				</label>
+				<div class="input-div">
+					<input type="text" name="owner" value="" class="form-control">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group  field-notes">
+				<label for="Notes">
+					Notes
+				</label>
+				<div class="input-div">
+					<input type="text" name="Notes" value="" class="form-control">
+					<span id="help-text" class="help-block">
+					</span>
+					<span id="error-text" class="help-block">
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div">
+					<button id="form-submit-button" class="btn btn-success" type="submit">
+						<span class="fa fa-check">
+						</span>
+						Save
+					</button>
+					<a href="#" id="form-cancel-button" class="btn btn-default">
+						Cancel
+					</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+

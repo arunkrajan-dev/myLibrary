@@ -1,0 +1,366 @@
+{
+	"application": {
+		"title": "My Library - Simple Book Management",
+
+		"theme": "bootswatch-paper",
+
+		"collections": [
+			{
+				"name": "books",
+				"fields": [
+					{ "name": "title", "title": "Book Title", "required": true, "exportable": true },
+					{ "name": "author", "title": "Book Author", "required": true, "exportable": true },
+					{ "name": "publish", "title": "Book Publish Info", "exportable": true },
+					{ "name": "owner", "title": "Book Owner", "exportable": true },
+					{ "name": "Notes", "title": "Notes", "exportable": true }
+				],
+				"owner_field": "ownerId",
+				"roles_allowed_to_read": ["owner"],
+				"roles_allowed_to_update": ["owner"],
+				"roles_allowed_to_delete": ["owner"],
+			},
+
+			{
+				"name": "book_issues",
+				"fields": [
+					{ "name": "issuedTo", "title": "Issued To", "required": true, "exportable": true },
+					{ "name": "issuedDate", "title": "Issued On", "type": "date", "format": "DD-MM-YYYY", "input": "datepicker", "default": "today", "required": true, "exportable": true },
+					{ "name": "ExpectedReturnDate", "title": "Expected Return On", "type": "date", "format": "DD-MM-YYYY", "input": "datepicker", "default": "today", "required": true, "exportable": true },
+					{ "name": "notes", "title": "Notes", "exportable": true }
+				],
+				"owner_field": "ownerId",
+
+				"roles_allowed_to_read": ["owner"],
+				"roles_allowed_to_update": ["owner"],
+				"roles_allowed_to_delete": ["owner"],
+			}
+		],
+
+		"queries": [
+			{
+				"name": "book_list",
+				"collection": "books",
+				"filter": {},
+				"options": {
+					"sort": [[ "title", "desc"]]
+				}
+			},
+			{
+				"name": "book_empty",
+				"collection": "books",
+				"filter": { "_id": null },
+				"options": {},
+				"find_one": true,
+				"related_queries": [
+					{ "name": "book_list" }
+				]
+			},
+			{
+				"name": "book_details",
+				"collection": "books",
+				"filter": { "_id": ":bookId" },
+				"find_one": true
+			},
+			{
+				"name": "book_issues",
+				"collection": "book_issues",
+				"filter": { "bookId": ":bookId" }
+			},
+			{
+				"name": "book_issues_empty",
+				"collection": "book_issues",
+				"filter": { "_id": null },
+				"find_one": true
+			},
+			{
+				"name": "book_issue",
+				"collection": "book_issues",
+				"filter": { "_id": ":issueId" },
+				"find_one": true
+			},
+			{
+				"name": "current_user_data",
+				"collection": "users",
+				"filter": { "_id": "Meteor.userId()" },
+				"find_one": true
+			}
+		],
+
+		"public_zone": {
+			"pages": [
+				{ 
+					"name": "home_public", 
+					"title": "", 
+					"components": [
+						{
+							"name": "home_jumbotron",
+							"title": "My Library - Simple Book Management",
+							"type": "jumbotron",
+							"text": "This My Library Apllication is a sample applicaton created to learn Meteor and Meteor Kitchen.",
+							"button_title": "Continue &raquo;",
+							"button_route": "login"
+						}
+					]
+				},
+				{ "name": "login", "template": "login" },
+				{ "name": "register", "template": "register" },
+				{ "name": "forgot_password", "template": "forgot_password" },
+				{ "name": "reset_password", "template": "reset_password", "route_params": ["resetPasswordToken"] }
+			],
+
+			"components": [
+				{
+					"name": "left_menu",
+					"type": "menu",
+					"class": "nav navbar-nav",
+					"dest_selector": "#menu",
+					"items": [
+						{ "title": "Home", "route": "home_public" }
+					]
+				},
+
+				{
+					"name": "right_menu",
+					"type": "menu",
+					"class": "nav navbar-nav navbar-right",
+					"dest_selector": "#menu",
+					"items": [
+						{ "title": "Register", "route": "register" },
+						{ "title": "Login", "route": "login" }
+					]
+				}
+			]
+		},
+
+		"private_zone": {
+			"pages": [
+				{
+					"name": "home_private",
+					"title": "Welcome {{userFullName}}!",
+					"text": "Place for dashboard here..."
+				},
+				
+				{
+					"name": "books",
+					"components": [
+						{
+							"name": "view",
+							"type": "data_view",
+							"title": "books",
+							"text_if_empty": "No books :(",
+							"query_name": "book_list",
+							"insert_route": "books.insert",
+							"edit_route": "books.edit",
+							"edit_route_params": [
+								{ "name": "bookId", "value": "this._id" }
+							],
+							"details_route": "books.details",
+							"details_route_params": [
+								{ "name": "bookId", "value": "this._id" }
+							]
+						}
+					],
+
+					"pages": [
+						{
+							"name": "insert",
+							"components": [
+								{
+									"name": "insert_form",
+									"type": "form",
+									"mode": "insert",
+									"title": "New Book",
+
+									"query_name": "book_empty",
+
+									"submit_route": "books.details",
+									"submit_route_params": [
+										{ "name": "bookId", "value": "newId"}
+									],
+									"cancel_route": "books"
+								}
+							]
+						},
+						{
+							"name": "details",
+							"template": "page_subcontent_tabnav",
+							"route_params": ["bookId"],
+							"components": [
+								{
+									"name": "details_form",
+									"type": "form",
+									"mode": "read_only",
+									"title": "Book #{{book_details.title}}",
+									"layout": "horizontal",
+									"query_name": "book_details",
+									"back_route": "books"
+								}
+
+							],
+
+							"force_yield_subpages": true,
+							"pages": [
+								{
+									"name": "issues",
+									"components": [
+										{
+											"name": "view",
+											"type": "data_view",
+											"text_if_empty": "No issues",
+											"query_name": "book_issues",
+											"insert_button_title": "Add issue",
+											"insert_route": "books.details.insert",
+											"insert_route_params": [
+												{ "name": "bookId", "value": "this.params.bookId" }
+											],
+											"edit_route": "books.details.edit",
+											"edit_route_params": [
+												{ "name": "bookId", "value": "UI._parentData(1).params.bookId" },
+												{ "name": "issueId", "value": "this._id" }
+											]
+										}
+									]
+								},
+
+								{
+									"name": "insert",
+									"components": [										
+										{
+											"name": "insert_form",
+											"type": "form",
+											"mode": "insert",
+											"title": "Add issue",
+											"query_name": "book_issues_empty",
+
+											"hidden_fields": [
+												{ "name": "bookId", "value": "this.params.bookId" }
+											],
+
+											"submit_route": "books.details",
+											"submit_route_params": [
+												{ "name": "bookId", "value": "this.params.bookId"}
+											],
+											"cancel_route": "books.details",
+											"cancel_route_params": [
+												{ "name": "bookId", "value": "this.params.bookId"}
+											]
+										}
+									]
+								},
+
+								{
+									"name": "edit",
+									"route_params": ["issueId"],
+									"components": [
+										{
+											"name": "edit_form",
+											"type": "form",
+											"mode": "update",
+											"title": "Edit issue",
+											"query_name": "book_issue",
+											"submit_route": "books.details",
+											"submit_route_params": [
+												{ "name": "bookId", "value": "this.params.bookId"}
+											],
+											"cancel_route": "books.details",
+											"cancel_route_params": [
+												{ "name": "bookId", "value": "this.params.bookId"}
+											]
+										}
+									]
+								}
+							]
+						},
+
+						{
+							"name": "edit",
+							"route_params": ["bookId"],
+							"components": [
+								{
+									"name": "edit_form",
+									"type": "form",
+									"mode": "update",
+									"title": "Edit book",
+									"submit_route": "books",
+									"cancel_route": "books",
+									"query_name": "book_details"
+								}
+							]
+						}
+					]
+				},
+
+				{
+					"name": "user_settings",
+					"pages": [
+						{
+							"name": "profile",
+							"components": [
+								{
+									"name": "edit_form",
+									"type": "form",
+									"mode": "update",
+									"title": "Edit your profile",
+									"submit_route": "user_settings.profile",
+									"query_name": "current_user_data",
+									"fields": [
+										{ "name": "profile.name", "title": "Name", "required": true },
+										{ "name": "profile.email", "title": "E-mail", "type": "email", "required": true },
+										{ "name": "profile.facebook", "title": "Facebook URL" },
+										{ "name": "profile.google", "title": "Google+ URL" },
+										{ "name": "profile.twitter", "title": "Twitter ID" },
+										{ "name": "profile.website", "title": "Website URL" }
+									]
+								}
+							]
+						},
+
+						{ "name": "change_pass", "template": "change_pass" }
+					],
+
+					"components": [
+						{
+							"name": "side_menu",
+							"type": "menu",
+							"class": "nav nav-stacked nav-pills",
+							"items": [
+								{ "title": "Profile", "route": "user_settings.profile" },
+								{ "title": "Change password", "route": "user_settings.change_pass" }
+							]
+						}
+					]
+				},
+
+				{ "name": "logout", "template": "logout" }
+			],
+
+			"components": [
+				{
+					"name": "left_menu",
+					"type": "menu",
+					"class": "nav navbar-nav",
+					"dest_selector": "#menu",
+					"items": [
+						{ "title": "Home", "route": "home_private" },
+						{ "title": "books", "route": "books" }
+					]
+				},
+				{
+					"name": "right_menu",
+					"type": "menu",
+					"class": "nav navbar-nav navbar-right",
+					"dest_selector": "#menu",
+					"items": [
+						{ 
+							"title": "{{userEmail}}",
+							"items": [
+								{ "title": "Settings", "route": "user_settings" },
+								{ "title": "Logout", "route": "logout" }
+							]
+						}
+					]
+				}
+			]
+		}
+	}
+}

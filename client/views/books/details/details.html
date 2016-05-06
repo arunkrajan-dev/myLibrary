@@ -1,0 +1,114 @@
+<template name="BooksDetails">
+	<div class="page-container container">
+		<div class="row">
+			<div class="col-md-12" id="content">
+				<div class="row" id="title_row">
+					<div class="col-md-12">
+						<div id="page_menu" class="pull-right">
+						</div>
+					</div>
+				</div>
+				{{> BooksDetailsDetailsForm}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" id="menu">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" id="subcontent">
+				{{> yield region='BooksDetailsSubcontent'}}
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="BooksDetailsDetailsForm">
+	<div id="books-details-details-form" class="">
+		<h2 id="component-title">
+			<a href="#" id="form-back-button" class="btn btn-default" title="back">
+				<span class="fa fa-chevron-left">
+				</span>
+			</a>
+			Book #{{book_details.title}}
+		</h2>
+		<form role="form" class="form-horizontal">
+			{{#if errorMessage}}
+			<div class="alert alert-warning">
+				{{errorMessage}}
+			</div>
+			{{/if}}
+
+			{{#if infoMessage}}
+			<div class="alert alert-success">
+				{{infoMessage}}
+			</div>
+			{{/if}}
+			<div class="form-group  field-title">
+				<label for="title" class="col-sm-3 control-label">
+					Book Title
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.title}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group  field-author">
+				<label for="author" class="col-sm-3 control-label">
+					Book Author
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.author}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group  field-lang">
+				<label for="lang" class="col-sm-3 control-label">
+					Language
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.lang}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group  field-publish">
+				<label for="publish" class="col-sm-3 control-label">
+					Book Publish Info
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.publish}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group  field-owner">
+				<label for="owner" class="col-sm-3 control-label">
+					Book Owner
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.owner}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group  field-notes">
+				<label for="Notes" class="col-sm-3 control-label">
+					Notes
+				</label>
+				<div class="input-div col-sm-9">
+					<p class="form-control-static">
+						{{book_details.Notes}}
+					</p>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="submit-div col-sm-9 col-sm-offset-3">
+				</div>
+			</div>
+		</form>
+	</div>
+</template>
+
