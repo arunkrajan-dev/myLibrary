@@ -110,8 +110,11 @@
 				<th class="th-sortable" data-sort="owner">
 					Book Owner
 				</th>
-				<th class="th-sortable" data-sort="Notes">
-					Notes
+				<th class="th-sortable" data-sort="status">
+					Status
+				</th>
+				<th>
+					&nbsp;
 				</th>
 				<th>
 					&nbsp;
@@ -145,7 +148,16 @@
 			{{owner}}
 		</td>
 		<td>
-			{{Notes}}
+			{{#if status}}
+			<span title="Issued to {{issuedTo}} expected on {{formatDate expectedReturnDate 'DD/MM/YYYY'}}">
+				Issued
+			</span>				
+			{{else}}
+				Available
+			{{/if}}
+		</td>
+		<td class="td-icon">
+			{{{getAction status}}}
 		</td>
 		<td class="td-icon">
 			<span id="edit-button" class="fa fa-pencil {{editButtonClass}}" title="Edit">

@@ -35,7 +35,7 @@ BookIssues.before.remove(function(userId, doc) {
 });
 
 BookIssues.after.insert(function(userId, doc) {
-	
+	Books.update({_id: doc.bookId}, {$set:{status: "issued", expectedReturnDate: doc.expectedReturnDate, issuedTo: doc.issuedTo }});
 });
 
 BookIssues.after.update(function(userId, doc, fieldNames, modifier, options) {

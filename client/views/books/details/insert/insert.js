@@ -66,8 +66,9 @@ Template.BooksDetailsInsertInsertForm.events({
 					}; break;
 				}
 			}
-
-			Router.go("books.details", {bookId: self.params.bookId});
+			
+			bootbox.hideAll();
+			//Router.go("books.details", {bookId: self.params.bookId});
 		}
 
 		function errorAction(msg) {
@@ -85,6 +86,7 @@ Template.BooksDetailsInsertInsertForm.events({
 
 			},
 			function(values) {
+				debugger;
 				values.bookId = self.params.bookId;
 
 				newId = BookIssues.insert(values, function(e) { if(e) errorAction(e); else submitAction(); });
@@ -97,8 +99,8 @@ Template.BooksDetailsInsertInsertForm.events({
 		e.preventDefault();
 
 		
-
-		Router.go("books.details", {bookId: this.params.bookId});
+		bootbox.hideAll();
+		//Router.go("books.details", {bookId: this.params.bookId});
 	},
 	"click #form-close-button": function(e, t) {
 		e.preventDefault();

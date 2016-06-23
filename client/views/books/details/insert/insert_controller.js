@@ -3,7 +3,7 @@ this.BooksDetailsInsertController = RouteController.extend({
 	
 
 	yieldTemplates: {
-		'BooksDetailsInsert': { to: 'BooksDetailsSubcontent'}
+		//'BooksDetailsInsert': { to: 'BooksDetailsSubcontent'}
 		
 	},
 
@@ -12,7 +12,16 @@ this.BooksDetailsInsertController = RouteController.extend({
 	},
 
 	action: function() {
-		if(this.isReady()) { this.render(); } else { this.render("BooksDetails"); this.render("loading", { to: "BooksDetailsSubcontent" });}
+		if(this.isReady()) {
+			bootbox.dialog({
+			        title: "Title",
+			        message: '<span/>' // bootbox doesn't accept an empty value
+			    }
+			);
+			Blaze.renderWithData(Template.BooksDetailsInsert, {params: this.params}, $('.bootbox-body')[0]); 			
+		} else { 
+			this.render("BooksDetails"); this.render("loading", { to: "BooksDetailsSubcontent" });
+		}
 		/*ACTION_FUNCTION*/
 	},
 

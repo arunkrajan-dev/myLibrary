@@ -272,6 +272,36 @@ Template.BooksViewTableItems.events({
 		e.preventDefault();
 		Router.go("books.edit", {bookId: this._id});
 		return false;
+	},
+	"click #receive-button": function(e, t) {
+		e.preventDefault();
+		var me = this;
+		bootbox.dialog({
+			message: "Received? Please confirm?",
+			title: "Received",
+			animate: false,
+			buttons: {
+				success: {
+					label: "Yes",
+					className: "btn-success",
+					callback: function() {
+						Books.update({ _id: me._id }, {$set:{status: "", expectedReturnDate: "", issuedTo: ""}});
+					}
+				},
+				danger: {
+					label: "No",
+					className: "btn-default"
+				}
+			}
+		});
+		return false;
+	},
+	"click #issue-button": function(e, t) {
+		e.preventDefault();
+		bootbox.dialog({title: "Title", message: '<span/>'});
+		Blaze.renderWithData(Template.BooksDetailsInsert, {params:{bookId: this._id}}, $('.bootbox-body')[0]); 
+		return false;
+		
 	}
 });
 
@@ -283,5 +313,14 @@ Template.BooksViewTableItems.helpers({
 
 	"deleteButtonClass": function() {
 		return Books.userCanRemove(Meteor.userId(), this) ? "" : "hidden";
+	},
+	
+	"getAction": function(status) {
+		if(status == "issued") {
+			return '<a href="#" id="receive-button">Receive</a>';
+		} else {
+			return '<a href="#" id="issue-button">Issue</a>';
+		}
 	}
+	
 });

@@ -132,7 +132,10 @@ Template.BooksDetailsIssuesView.events({
 
 	"click #dataview-insert-button": function(e, t) {
 		e.preventDefault();
-		Router.go("books.details.insert", {bookId: this.params.bookId});
+		bootbox.dialog({title: "Title", message: '<span/>'});
+		Blaze.renderWithData(Template.BooksDetailsInsert, {params:{bookId: this.params.bookId}}, $('.bootbox-body')[0]); 
+
+		//Router.go("books.details.insert", {bookId: this.params.bookId});
 	},
 
 	"click #dataview-export-default": function(e, t) {
