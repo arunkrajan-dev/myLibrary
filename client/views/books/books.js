@@ -31,7 +31,7 @@ var BooksViewItems = function(cursor) {
 	} else {
 		searchString = searchString.replace(".", "\\.");
 		var regEx = new RegExp(searchString, "i");
-		var searchFields = ["title", "author", "publish", "owner", "Notes"];
+		var searchFields = ["title", "author", "publish", "owner", "Notes", "act", "sec"];
 		filtered = _.filter(raw, function(item) {
 			var match = false;
 			_.each(searchFields, function(field) {
