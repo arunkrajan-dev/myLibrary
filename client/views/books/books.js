@@ -302,7 +302,12 @@ Template.BooksViewTableItems.events({
 		Blaze.renderWithData(Template.BooksDetailsInsert, {params:{bookId: this._id}}, $('.bootbox-body')[0]); 
 		return false;
 		
+	},
+	"click #notes-button": function(e, t) {
+		e.preventDefault();
+		return false;
 	}
+	
 });
 
 Template.BooksViewTableItems.helpers({

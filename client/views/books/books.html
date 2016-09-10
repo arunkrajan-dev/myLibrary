@@ -101,11 +101,11 @@
 				<th class="th-sortable" data-sort="author">
 					Book Author
 				</th>
-				<th class="th-sortable" data-sort="lang">
-					Language
+				<th class="th-sortable" data-sort="act">
+					Act
 				</th>
-				<th class="th-sortable" data-sort="publish">
-					Book Publish Info
+				<th class="th-sortable" data-sort="sec">
+					Section
 				</th>
 				<th class="th-sortable" data-sort="owner">
 					Book Owner
@@ -139,10 +139,10 @@
 			{{author}}
 		</td>
 		<td>
-			{{lang}}
+			{{act}}
 		</td>
 		<td>
-			{{publish}}
+			{{sec}}
 		</td>
 		<td>
 			{{owner}}
@@ -167,6 +167,15 @@
 			<span id="delete-button" class="fa fa-trash-o {{deleteButtonClass}}" title="Delete">
 			</span>
 		</td>
+	</tr>
+	<tr>
+	<td colspan="7">
+		 <div class="" id="{{_id}}collapseExample">
+		  <div class="well">
+		    <strong>Notes:</strong>&nbsp;{{Notes}}
+		  </div>
+		</div>
+	</td>
 	</tr>
 </template>
 
